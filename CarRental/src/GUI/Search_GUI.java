@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import Logic.Controller;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,8 +17,10 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
  * @author aldo
  */
 public class Search_GUI extends JFrame {
-    public Search_GUI() {
+    private Controller controller;
     
+    public Search_GUI(Controller controller) {
+        this.controller = controller;
         JPanel panel=new JPanel();
         panel.setLayout(null);
         
@@ -38,7 +41,7 @@ public class Search_GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //String CustomerName= jtable
-                Customer_GUI frame=new Customer_GUI();
+                Customer_GUI frame = new Customer_GUI(Search_GUI.this.controller);
                 frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                 frame.setLocation(250, 250);
                 frame.setSize(700,500);
