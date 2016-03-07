@@ -6,18 +6,16 @@
 package GUI;
 
 import javax.swing.*;
-import Logic.Controller;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 /**
  *
  * @author aldo
  */
 public class Customer_GUI extends JFrame {
     
-    private Controller controller;
+    private CarRental controller;
 
-    public Customer_GUI(Controller controller){
+    public Customer_GUI(CarRental controller){
         JPanel panel=new JPanel();
         panel.setLayout(null);
         

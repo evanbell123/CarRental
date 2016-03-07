@@ -5,22 +5,26 @@
  */
 package Logic;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author chriswalter
  */
-public class CarSpec extends Car {
+public class CarSpec {
     private String make;
     private String model;
     private int year;
     private carSize size;
+    private LinkedList<Car> cars;
+    
 
-    public CarSpec(int ID,String make, String model, int year, carSize size) {
-        super(ID);
+    public CarSpec(String make, String model, int year, carSize size) {
         this.make = make;
         this.model = model;
         this.year = year;
         this.size = size;
+        cars = new LinkedList<>();
     }
 
     public String getMake() {
@@ -53,6 +57,14 @@ public class CarSpec extends Car {
 
     public void setSize(carSize size) {
         this.size = size;
+    }
+    
+    public LinkedList<Car> getCars() {
+        return this.cars;
+    }
+    
+    public void addCar(Car car) {
+        cars.add(car);
     }
     
 }

@@ -5,17 +5,21 @@
  */
 package Logic;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author chriswalter
  */
 public class Car {
+
     private int ID;
-    
-     public Car(int ID) {
+    private LinkedList<Rental> rentals;
+
+    public Car(int ID) {
         this.ID = ID;
     }
-     
+
     public int getID() {
         return ID;
     }
