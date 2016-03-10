@@ -5,9 +5,11 @@
  */
 package GUI;
 
+import Logic.Customer;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 import javax.swing.*;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -33,15 +35,25 @@ public class Search_GUI extends JFrame {
         searchButton.setBounds(425, 20, 100, 25);
         panel.add(searchButton);
         
+        
+        
+        
+        
+        
          String[] columnNames = {"Name",
                                 "Telephone",
                                 "Address"};
-        Object[][] tableData = {{"aldo", "123-456-789", "100 umkc"},{"","",""}};
-        DefaultTableModel model = new DefaultTableModel(tableData, columnNames);
+        Object[][] customerTableData = {};
+        DefaultTableModel customerModel = new DefaultTableModel(customerTableData, columnNames);
 
-        JTable table = new JTable(model);
+        JTable table = new JTable(customerModel);
         //table.setBounds(50, 120, 550, 300);
-        
+
+        for (Customer cust : this.controller.getCustomers()) {
+            customerModel.addRow(new Object[]{cust.getName(), cust.getPhone(), cust.getAddress()});    
+        }
+    
+            
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBounds(50, 120, 550, 300);
         panel.add(scrollPane);
@@ -50,18 +62,30 @@ public class Search_GUI extends JFrame {
         
         JButton rentCarButton = new JButton("Rent Car");
         rentCarButton.setBounds(50, 70, 115, 25);
+        
+        
+        searchButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LinkedList<Customer> customers = controller.searchCustomers(customerSearchText.getText());
+                customerModel.setRowCount(0);
+                for(Customer cust :customers){
+                    customerModel.addRow(new Object[]{cust.getName(), cust.getPhone(), cust.getAddress()});
+                }
+            }
+        });
+        
         rentCarButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
                 //String CustomerName= jtable
                 int layout =0;
 
- 
                 if(table.getSelectedRow() == -1){
                     JOptionPane.showMessageDialog(null, Error, "NO ACCOUNT SELECTED",JOptionPane.ERROR_MESSAGE);  
                 }else{
                     String accountName =new String();
-                    accountName = model.getValueAt(table.getSelectedRow(),0).toString();
+                    accountName = customerModel.getValueAt(table.getSelectedRow(),0).toString();
                     Customer_GUI frame=new Customer_GUI(layout, accountName, Search_GUI.this.controller);
                     frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                     frame.setLocation(250, 250);
@@ -84,7 +108,7 @@ public class Search_GUI extends JFrame {
                     JOptionPane.showMessageDialog(null, Error, "NO ACCOUNT SELECTED",JOptionPane.ERROR_MESSAGE);  
                 }else{
                     String accountName =new String();
-                    accountName = model.getValueAt(table.getSelectedRow(),0).toString();
+                    accountName = customerModel.getValueAt(table.getSelectedRow(),0).toString();
                     int layout = 1;
 
                 

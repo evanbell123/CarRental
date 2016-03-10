@@ -16,6 +16,7 @@ public class Customer implements Searchable {
     private final String phone;
     private final String address;
     private final LinkedList<Rental> rentals;
+
     
     public Customer(String name, String phone, String address) {
         this.name = name;
@@ -32,4 +33,27 @@ public class Customer implements Searchable {
         
         return (theName || theAddr || thePhone);
     }
+    
+    
+    @Override 
+    public String toString(){
+        return name;
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public LinkedList<Rental> getRentals() {
+        return rentals;
+    }
+    
 }

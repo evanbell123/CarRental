@@ -77,6 +77,22 @@ public class CarRental {
         frame.setMaximumSize(new Dimension(800, 400));
         frame.setVisible(true);
     }
+    
+    
+    public LinkedList<Customer> getCustomers(){
+        return customerList;
+    }
+    
+    public LinkedList<Customer> searchCustomers(String text){
+        LinkedList<Customer> list = new LinkedList<>();
+        
+        for (Customer cust : customerList){
+            if (cust.contains(text)){
+                list.add(cust);
+            }
+        }
+        return list;
+    }
 
     void populateFindCarTable(JTable findCarTable) {
         DefaultTableModel model = (DefaultTableModel) findCarTable.getModel();
