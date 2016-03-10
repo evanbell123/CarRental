@@ -7,6 +7,7 @@ package GUI;
 
 import Logic.Car;
 import Logic.CarSpec;
+import Logic.Customer;
 import static Logic.carSize.*;
 import java.awt.Dimension;
 import java.util.LinkedList;
@@ -21,13 +22,27 @@ import javax.swing.table.DefaultTableModel;
 public class CarRental {
 
     private final LinkedList<CarSpec> carSpecs;
+    private LinkedList<Customer> customerList;
 
     public CarRental() {
-        this.carSpecs = new LinkedList<>();
+        /*
+        Generate Sample Customers
+        */
+        this.customerList = new LinkedList<>();
+        
+        customerList.add(new Customer("Chris Walter","456-641-123", "300UMKC"));
+        customerList.add(new Customer("Evan Bell","556-641-123", "400UMKC"));
+        customerList.add(new Customer("Aldo II","981-641-123", "500UMKC"));
+        
+        
+
 
         /*
         Generate sample carSpecs
          */
+        
+        this.carSpecs = new LinkedList<>();
+        
         carSpecs.add(new CarSpec("Nissan", "Altima", 2012, SMALL));
         carSpecs.add(new CarSpec("Nissan", "Altima", 2012, MIDSIZED));
         carSpecs.add(new CarSpec("Volks Wagen", "Passat", 2002, LARGE));
