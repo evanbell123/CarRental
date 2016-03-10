@@ -72,13 +72,17 @@ public class Customer_GUI extends JFrame {
         JButton searchButton = new JButton("Search");
         searchButton.setBounds(365, 15, 100, 25);
         panel1.add(searchButton);
+//      Add Rent Selected button
+        JButton rentSelectedButton = new JButton("Rent Selected");
+        rentSelectedButton.setBounds(10,45, 115, 25 );
+        panel1.add(rentSelectedButton);
         
         String[] columnNames = {"Make","Model","Size"};
         Object[][] tableData = {};
         JTable findCarTable = new JTable(new DefaultTableModel(tableData,columnNames));
         controller.populateFindCarTable(findCarTable);
         JScrollPane findCarScrollPane = new JScrollPane(findCarTable);
-        findCarScrollPane.setBounds(0, 50, 550, 300);
+        findCarScrollPane.setBounds(0, 75, 550, 300);
         //tabbedPane.add(findCarScrollPane);
         findCarTable.setRowSelectionInterval(0, 0);
         findCarTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
