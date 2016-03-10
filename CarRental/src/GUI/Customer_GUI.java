@@ -27,7 +27,7 @@ public class Customer_GUI extends JFrame {
       JPanel panel2=	rentedCarsTab();
       JPanel panel3=  accountHistoryTab();
 
-        String accountName =  "My Account";
+        String accountName =  name + "'s Account";
         JLabel accountNameLabel = new JLabel(accountName);
         accountNameLabel.setBounds(50, 50, 200, 25);
         panel.add(accountNameLabel);
@@ -50,7 +50,7 @@ public class Customer_GUI extends JFrame {
 
 
         tabbedPane.setBounds(50,120,550,300);
-
+        tabbedPane.setSelectedIndex(layout);
 
 
         //panel.add(customerNameText);
@@ -63,12 +63,26 @@ public class Customer_GUI extends JFrame {
 
     private JPanel findCarTab(CarRental controller) {
         JPanel panel1 = new JPanel();
+        panel1.setLayout(null);
+//      Add Search Bar
+        JTextField customerSearchText = new JTextField(20);
+        customerSearchText.setBounds(10, 15, 350, 25);
+        panel1.add(customerSearchText);
+ //     Add Search Button       
+        JButton searchButton = new JButton("Search");
+        searchButton.setBounds(365, 15, 100, 25);
+        panel1.add(searchButton);
+//      Add Rent Selected button
+        JButton rentSelectedButton = new JButton("Rent Selected");
+        rentSelectedButton.setBounds(10,45, 115, 25 );
+        panel1.add(rentSelectedButton);
+        
         String[] columnNames = {"Make","Model","Size"};
         Object[][] tableData = {};
         JTable findCarTable = new JTable(new DefaultTableModel(tableData,columnNames));
         controller.populateFindCarTable(findCarTable);
         JScrollPane findCarScrollPane = new JScrollPane(findCarTable);
-        findCarScrollPane.setBounds(50, 120, 550, 300);
+        findCarScrollPane.setBounds(0, 75, 550, 300);
         //tabbedPane.add(findCarScrollPane);
         findCarTable.setRowSelectionInterval(0, 0);
         findCarTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -104,7 +118,7 @@ public class Customer_GUI extends JFrame {
 
         //table.setBounds(50, 120, 550, 300);
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBounds(25, 50, 500, 300);
+        scrollPane.setBounds(0, 50, 550, 300);
         panel2.add(scrollPane);
         table.setRowSelectionInterval(0, 0);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -130,7 +144,7 @@ JPanel panel3 = new JPanel();
 
         //table.setBounds(50, 120, 550, 300);
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBounds(25, 50, 500, 300);
+        scrollPane.setBounds(0, 50, 550, 300);
         panel3.add(scrollPane);
         table.setRowSelectionInterval(0, 0);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
