@@ -27,7 +27,7 @@ public class Customer_GUI extends JFrame {
       JPanel panel2=	rentedCarsTab();
       JPanel panel3=  accountHistoryTab();
 
-        String accountName =  "My Account";
+        String accountName =  name + "'s Account";
         JLabel accountNameLabel = new JLabel(accountName);
         accountNameLabel.setBounds(50, 50, 200, 25);
         panel.add(accountNameLabel);
@@ -66,7 +66,7 @@ public class Customer_GUI extends JFrame {
         panel1.setLayout(null);
 //      Add Search Bar
         JTextField customerSearchText = new JTextField(20);
-        customerSearchText.setBounds(0, 15, 350, 25);
+        customerSearchText.setBounds(10, 15, 350, 25);
         panel1.add(customerSearchText);
  //     Add Search Button       
         JButton searchButton = new JButton("Search");
@@ -78,7 +78,7 @@ public class Customer_GUI extends JFrame {
         JTable findCarTable = new JTable(new DefaultTableModel(tableData,columnNames));
         controller.populateFindCarTable(findCarTable);
         JScrollPane findCarScrollPane = new JScrollPane(findCarTable);
-        findCarScrollPane.setBounds(0, 50, 500, 300);
+        findCarScrollPane.setBounds(0, 50, 550, 300);
         //tabbedPane.add(findCarScrollPane);
         findCarTable.setRowSelectionInterval(0, 0);
         findCarTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -114,7 +114,7 @@ public class Customer_GUI extends JFrame {
 
         //table.setBounds(50, 120, 550, 300);
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBounds(0, 50, 500, 300);
+        scrollPane.setBounds(0, 50, 550, 300);
         panel2.add(scrollPane);
         table.setRowSelectionInterval(0, 0);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -140,7 +140,7 @@ JPanel panel3 = new JPanel();
 
         //table.setBounds(50, 120, 550, 300);
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBounds(0, 50, 500, 300);
+        scrollPane.setBounds(0, 50, 545, 300);
         panel3.add(scrollPane);
         table.setRowSelectionInterval(0, 0);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
