@@ -6,65 +6,62 @@
 package GUI;
 
 import javax.swing.*;
-import Logic.Controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 /**
  *
  * @author aldo
  */
 public class Customer_GUI extends JFrame {
-    
-    private Controller controller;
 
-    public Customer_GUI(int layout, String name, Controller controller){
-        JPanel panel=new JPanel();
-        panel.setLayout(null);
-        
-        
-          // Create the tab pages
-	JPanel panel1=	findCarTab(controller);
-	JPanel panel2=	rentedCarsTab();
-        JPanel panel3=  accountHistoryTab();
+    private CarRental controller;
 
-        String accountName=name + "'s Account";
+    public Customer_GUI(int layout, String name, CarRental controller){
+      JPanel panel=new JPanel();
+      panel.setLayout(null);
+
+      // Create the tab pages
+      JPanel panel1=	findCarTab(controller);
+      JPanel panel2=	rentedCarsTab();
+      JPanel panel3=  accountHistoryTab();
+
+        String accountName =  "My Account";
         JLabel accountNameLabel = new JLabel(accountName);
         accountNameLabel.setBounds(50, 50, 200, 25);
         panel.add(accountNameLabel);
         JTabbedPane tabbedPane = new JTabbedPane();
-        
+
 //      FIND CARS tab
-       
-        tabbedPane.addTab("Find Car", null, panel1, 
+
+        tabbedPane.addTab("Find Car", null, panel1,
                 "Help customer find car");
-        
-        
+
+
 //      Rented Cars tab
-        tabbedPane.addTab("Rented Cars", null, panel2, 
+        tabbedPane.addTab("Rented Cars", null, panel2,
                             "See cars currently rented");
 
-        
+
 //      Returned Cars tab
         tabbedPane.addTab("Returned Cars", null, panel3,
                             "See customers returned cars");
-        
-        
-        tabbedPane.setBounds(50,120,550,300);
-        
 
-    
+
+        tabbedPane.setBounds(50,120,550,300);
+
+
+
         //panel.add(customerNameText);
         panel.add(tabbedPane);
         add(panel);
-        
-        
-     
+
+
+
     }
 
-    private JPanel findCarTab(Controller controller) {
+    private JPanel findCarTab(CarRental controller) {
         JPanel panel1 = new JPanel();
         panel1.setLayout(null);
 //      Add Search Bar
@@ -92,7 +89,7 @@ public class Customer_GUI extends JFrame {
 
     private JPanel rentedCarsTab() {
         JPanel panel2 = new JPanel();
-	panel2.setLayout( null ); 
+	panel2.setLayout( null );
         JButton returnCarButton = new JButton("Return Selected");
         returnCarButton.addActionListener(new ActionListener(){
             @Override
@@ -106,49 +103,49 @@ public class Customer_GUI extends JFrame {
          String[] columnNames = {"Select",
                                 "Make",
                                 "Model",
-                                "Year", 
+                                "Year",
                                 "Rented"};
         Object[][] tableData = {{false,"Nissan", "Altima", "2012", "10/12/16"},{false,"","","", ""}};
         MyTableModel model = new MyTableModel(tableData, columnNames);
-        
+
         JTable table = new JTable(model);
 
-   
+
 
         //table.setBounds(50, 120, 550, 300);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBounds(0, 50, 500, 300);
         panel2.add(scrollPane);
         table.setRowSelectionInterval(0, 0);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);      
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         return panel2;
     }
 
     private JPanel accountHistoryTab() {
 JPanel panel3 = new JPanel();
-	panel3.setLayout( null );  
-        
+	panel3.setLayout( null );
+
          String[] columnNames = {"ID",
                                 "Make",
                                 "Model",
-                                "Year", 
+                                "Year",
                                 "Rented",
                                 "Returned"};
         Object[][] tableData = {{"123","Nissan", "Altima", "2012", "10/12/16", "10/15/16"},{"234","","","","", ""}};
         //TableModel model = new MyTableModel(tableData, columnNames);
-        
+
         JTable table = new JTable(tableData, columnNames);
 
-   
+
 
         //table.setBounds(50, 120, 550, 300);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBounds(0, 50, 500, 300);
         panel3.add(scrollPane);
         table.setRowSelectionInterval(0, 0);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
-        
-        
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+
         return panel3;
     }
 }
@@ -169,12 +166,12 @@ class MyTableModel extends DefaultTableModel {
       }
       return type;
     }
-    
+
      @Override
     public boolean isCellEditable(int row, int column) {
       return column == 0;
     }
-    
+
         @Override
     public void setValueAt(Object aValue, int row, int column) {
       if (aValue instanceof Boolean && column == 0) {

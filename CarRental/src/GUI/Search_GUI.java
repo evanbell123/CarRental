@@ -5,7 +5,6 @@
  */
 package GUI;
 
-import Logic.Controller;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,9 +17,9 @@ import javax.swing.table.DefaultTableModel;
  * @author aldo
  */
 public class Search_GUI extends JFrame {
-    private Controller controller;
+    private CarRental controller;
     
-    public Search_GUI(Controller controller) {
+    public Search_GUI(CarRental controller) {
         this.controller = controller;
         JPanel panel=new JPanel();
         panel.setLayout(null);
