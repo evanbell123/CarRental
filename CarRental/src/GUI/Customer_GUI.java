@@ -50,7 +50,7 @@ public class Customer_GUI extends JFrame {
 
 
         tabbedPane.setBounds(50,120,550,300);
-
+        tabbedPane.setSelectedIndex(layout);
 
 
         //panel.add(customerNameText);
