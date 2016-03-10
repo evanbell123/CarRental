@@ -140,7 +140,7 @@ JPanel panel3 = new JPanel();
 
         //table.setBounds(50, 120, 550, 300);
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBounds(0, 50, 545, 300);
+        scrollPane.setBounds(0, 50, 550, 300);
         panel3.add(scrollPane);
         table.setRowSelectionInterval(0, 0);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
