@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import java.util.LinkedList;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -66,6 +67,12 @@ public class CarRental {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+         try 
+            { 
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"); 
+            } 
+            catch(Exception e){ 
+            }
         CarRental controller = new CarRental();
 
 //      Starting GUI      
