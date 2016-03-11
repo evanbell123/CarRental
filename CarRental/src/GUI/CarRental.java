@@ -5,16 +5,14 @@
  */
 package GUI;
 
-import Logic.Car;
 import Logic.CarSpec;
-import Logic.Customer;
+import Logic.Controller;
 import static Logic.carSize.*;
 import java.awt.Dimension;
 import java.util.LinkedList;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
-import javax.swing.JTable;
 import javax.swing.UIManager;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -22,58 +20,61 @@ import javax.swing.table.DefaultTableModel;
  */
 public class CarRental {
 
-    private final LinkedList<CarSpec> carSpecs;
-    private LinkedList<Customer> customerList;
+    //private static LinkedList<CarSpec> sampleCarSpecs;
+    //private static int id = 0; // this is the starting id
+    //private static final int carsPerSpec = 3; // Generate 3 cars for each spec
 
     public CarRental() {
         /*
-        Generate Sample Customers
+        sampleCarSpecs = new LinkedList<>();
+        sampleCarSpecs.add(new CarSpec("Nissan", "Altima", 2012, SMALL));
+        sampleCarSpecs.add(new CarSpec("Nissan", "Altima", 2012, MIDSIZED));
+        sampleCarSpecs.add(new CarSpec("Volks Wagen", "Passat", 2002, LARGE));
+        sampleCarSpecs.add(new CarSpec("Mercedes", "Benz", 2000, SMALL));
         */
-        this.customerList = new LinkedList<>();
-        
-        customerList.add(new Customer("Chris Walter","456-641-123", "300UMKC"));
-        customerList.add(new Customer("Evan Bell","556-641-123", "400UMKC"));
-        customerList.add(new Customer("Aldo II","981-641-123", "500UMKC"));
-        
-        
-
-
-        /*
-        Generate sample carSpecs
-         */
-        
-        this.carSpecs = new LinkedList<>();
-        
-        carSpecs.add(new CarSpec("Nissan", "Altima", 2012, SMALL));
-        carSpecs.add(new CarSpec("Nissan", "Altima", 2012, MIDSIZED));
-        carSpecs.add(new CarSpec("Volks Wagen", "Passat", 2002, LARGE));
-        carSpecs.add(new CarSpec("Mercedes", "Benz", 2000, SMALL));
-
-        /*
-        Generate sample cars for each carSpec
-         */
-        int id = 0; // this is the starting id
-        int carsPerSpec = 3; // Generate 3 cars for each spec
-
-        for (CarSpec carSpec : carSpecs) {
-            for (int i = 0; i < carsPerSpec; i++) {
-                carSpec.addCar(new Car(id));
-                id++;
-            }
-        }
     }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-         try 
-            { 
-                UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"); 
-            } 
-            catch(Exception e){ 
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+        }
+        
+        Controller controller = Controller.instance();
+        
+        /*
+        Generate sample carSpecs
+         */
+        CarSpec spec = new CarSpec("Nissan", "Altima", 2012, SMALL);
+        controller.addCarSpec(spec);
+        
+        /*
+        Generate sample cars for each carSpec
+         */
+        controller.addCar("Nissan", "Altima", 2012, SMALL, 1);
+        /*
+        sampleCarSpecs.stream().forEach((CarSpec carSpec) -> {
+            for (int i = 0; i < carsPerSpec; i++) {
+                controller.addCar(carSpec, id);
+                id++;
             }
-        CarRental controller = new CarRental();
+        });
+*/
+        
+        
+
+        /*
+        Generate Sample Customers
+         */
+        controller.addCustomer("Chris Walter", "456-641-1235", "300UMKC");
+        controller.addCustomer("Evan Bell", "556-641-1236", "400UMKC");
+        controller.addCustomer("Aldo II", "981-641-1239", "500UMKC");
+        
+        
+        
 
 //      Starting GUI      
         Search_GUI frame;
@@ -84,31 +85,4 @@ public class CarRental {
         frame.setMaximumSize(new Dimension(800, 400));
         frame.setVisible(true);
     }
-    
-    
-    public LinkedList<Customer> getCustomers(){
-        return customerList;
-    }
-    
-    public LinkedList<Customer> searchCustomers(String text){
-        LinkedList<Customer> list = new LinkedList<>();
-        
-        for (Customer cust : customerList){
-            if (cust.contains(text)){
-                list.add(cust);
-            }
-        }
-        return list;
-    }
-
-    void populateFindCarTable(JTable findCarTable) {
-        DefaultTableModel model = (DefaultTableModel) findCarTable.getModel();
-        for (CarSpec carSpec : carSpecs) {
-            for (Car car: carSpec.getCars()) {
-                model.addRow(new Object[]{carSpec.getMake(), carSpec.getModel(), carSpec.getSize()});
-            }
-            
-        }
-    }
-
 }

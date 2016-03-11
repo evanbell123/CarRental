@@ -14,6 +14,7 @@ import java.util.LinkedList;
 public class Car {
 
     private int ID;
+    private CarSpec carSpec;
     private LinkedList<Rental> rentals;
 
     public Car(int ID) {

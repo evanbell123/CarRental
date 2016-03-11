@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import Logic.Controller;
 import Logic.Customer;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -19,9 +20,9 @@ import javax.swing.table.DefaultTableModel;
  * @author aldo
  */
 public class Search_GUI extends JFrame {
-    private CarRental controller;
+    private Controller controller;
     
-    public Search_GUI(CarRental controller) {
+    public Search_GUI(Controller controller) {
         this.controller = controller;
         JPanel panel=new JPanel();
         panel.setLayout(null);
@@ -57,7 +58,7 @@ public class Search_GUI extends JFrame {
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBounds(50, 120, 550, 300);
         panel.add(scrollPane);
-        table.setRowSelectionInterval(0, 0);
+        //table.setRowSelectionInterval(0, 0);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
         JButton rentCarButton = new JButton("Rent Car");

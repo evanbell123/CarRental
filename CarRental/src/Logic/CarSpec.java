@@ -12,12 +12,12 @@ import java.util.LinkedList;
  * @author chriswalter
  */
 public class CarSpec {
+
     private String make;
     private String model;
     private int year;
     private carSize size;
     private LinkedList<Car> cars;
-    
 
     public CarSpec(String make, String model, int year, carSize size) {
         this.make = make;
@@ -25,6 +25,10 @@ public class CarSpec {
         this.year = year;
         this.size = size;
         cars = new LinkedList<>();
+    }
+
+    CarSpec() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public String getMake() {
@@ -58,13 +62,28 @@ public class CarSpec {
     public void setSize(carSize size) {
         this.size = size;
     }
-    
+
     public LinkedList<Car> getCars() {
         return this.cars;
     }
-    
+
     public void addCar(Car car) {
         cars.add(car);
     }
-    
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof CarSpec)) {
+            return false;
+        }
+
+        CarSpec that = (CarSpec) other;
+
+        // Custom equality check here.
+        return this.make.equals(that.make)
+                && this.model.equals(that.model)
+                && this.year == that.year
+                && this.size.equals(that.size);
+    }
+
 }
