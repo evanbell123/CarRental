@@ -34,7 +34,7 @@ public class Customer_GUI extends JFrame {
             "Rented",
             "Returned"};
     
-    String[] findCarColumnNames = {"Make", "Model", "Size"};
+    String[] findCarColumnNames = {"Select","ID", "Make", "Model", "Year","Size"};
 
     public Customer_GUI(int layout, String name, Controller controller) {
         this.controller = controller;
@@ -93,23 +93,24 @@ public class Customer_GUI extends JFrame {
         panel1.add(rentSelectedButton);
 
         
-        Object[][] tableData = {};
-        findCarTable = new JTable(new DefaultTableModel(tableData, findCarColumnNames));
+        Object[][] tableData = controller.getAvailableCars();
+        MyTableModel model = new MyTableModel(tableData, findCarColumnNames);
+        JTable findCarTable = new JTable(model);
         
         
         JScrollPane findCarScrollPane = new JScrollPane(findCarTable);
         findCarScrollPane.setBounds(0, 75, 550, 300);
         //tabbedPane.add(findCarScrollPane);
         //findCarTable.setRowSelectionInterval(0, 0);
-        findCarTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        //findCarTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 //      Adding table to find car tab
         panel1.add(findCarScrollPane);
         return panel1;
     }
     
     private void populateFindCarTable() {
-        Object[][] cars = controller.getAvailableCars();
-        findCarTable.setModel(new DefaultTableModel(cars, findCarColumnNames));
+        //Object[][] cars = controller.getAvailableCars();
+       // findCarTable.setModel(new DefaultTableModel(cars, findCarColumnNames));
     }
 
     private JPanel rentedCarsTab() {

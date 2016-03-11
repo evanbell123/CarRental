@@ -86,12 +86,12 @@ public class Controller {
 
     public Object[][] getAvailableCars() {
         //DefaultTableModel model = (DefaultTableModel) findCarTable.getModel();
-        Object[][] result = new Object[availableCars][3];
+        Object[][] result = new Object[availableCars][6];
         int count = 0;
         
         for (CarSpec carSpec : carSpecs) {
             for (Car car: carSpec.getCars()) {
-                Object[] carArray = {carSpec.getMake(), carSpec.getModel(), carSpec.getSize()};
+                Object[] carArray = {false,car.getID(),carSpec.getMake(), carSpec.getModel(), carSpec.getYear(),carSpec.getSize()};
                 result[count++] = carArray;
                 //model.addRow(new Object[]{carSpec.getMake(), carSpec.getModel(), carSpec.getSize()});
             }
