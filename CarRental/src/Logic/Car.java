@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 /**
  *
- * @author chriswalter
+ * @author EVAN & ALDO
  */
 public class Car {
 
