@@ -134,13 +134,20 @@ public class Customer_GUI extends JFrame {
         JPanel panel2 = new JPanel();
         panel2.setLayout(null);
         JButton returnCarButton = new JButton("Return Selected");
-        returnCarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Car Returned Successfully", "CAR RETURNED", JOptionPane.INFORMATION_MESSAGE);
-
-            }
-        });
+        returnCarButton.addActionListener(new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e){
+            
+            Return_Car_GUI returnCar = new Return_Car_GUI();
+            returnCar.setTitle("Return Car");
+            returnCar.setDefaultCloseOperation(EXIT_ON_CLOSE);
+            returnCar.setLocation(400, 350);
+            returnCar.setSize(300,200);
+            returnCar.setMaximumSize(new Dimension(800, 400));
+            returnCar.setVisible(true);
+            
+        }
+    });
         returnCarButton.setBounds(25, 15, 135, 25);
         panel2.add(returnCarButton);
         
