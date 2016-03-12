@@ -6,10 +6,12 @@
 package GUI;
 
 import Logic.Controller;
+import java.awt.Dimension;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -19,7 +21,6 @@ import javax.swing.table.DefaultTableModel;
 public class Customer_GUI extends JFrame {
 
     private Controller controller;
-    private JTable findCarTable;
     
     String[] rentedCarColumnNames = {"Select",
             "Make",
@@ -89,6 +90,22 @@ public class Customer_GUI extends JFrame {
         panel1.add(searchButton);
 //      Add Rent Selected button
         JButton rentSelectedButton = new JButton("Rent Selected");
+        //
+        rentSelectedButton.addActionListener(new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e){
+            
+            Rent_Car_GUI rentCar = new Rent_Car_GUI();
+            rentCar.setTitle("Rent Car");
+            rentCar.setDefaultCloseOperation(EXIT_ON_CLOSE);
+            rentCar.setLocation(400, 350);
+            rentCar.setSize(300,200);
+            rentCar.setMaximumSize(new Dimension(800, 400));
+            rentCar.setVisible(true);
+            
+        }
+    });
+        
         rentSelectedButton.setBounds(10, 45, 115, 25);
         panel1.add(rentSelectedButton);
 
