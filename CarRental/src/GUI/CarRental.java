@@ -48,13 +48,25 @@ public class CarRental {
         /*
         Generate sample carSpecs
          */
-        CarSpec spec = new CarSpec("Nissan", "Altima", 2012, SMALL);
-        controller.addCarSpec(spec);
+        CarSpec Altima2012 = new CarSpec("Nissan", "Altima", 2012, SMALL);
+        CarSpec Maxima2015 = new CarSpec("Nissan", "Maxima", 2015, MIDSIZED);
+        CarSpec Titan2016 = new CarSpec("Nissan", "Titan", 2016, LARGE);
+       
+        controller.addCarSpec(Altima2012);
+        controller.addCarSpec(Maxima2015);
+        controller.addCarSpec(Titan2016);
+
+        
         
         /*
         Generate sample cars for each carSpec
          */
         controller.addCar("Nissan", "Altima", 2012, SMALL, 1);
+        controller.addCar("Nissan", "Altima", 2012, SMALL, 2);
+        controller.addCar("Nissan", "Maxima", 2015, MIDSIZED, 3);
+        controller.addCar("Nissan", "Titan", 2016, LARGE, 4);
+
+                
         /*
         sampleCarSpecs.stream().forEach((CarSpec carSpec) -> {
             for (int i = 0; i < carsPerSpec; i++) {
