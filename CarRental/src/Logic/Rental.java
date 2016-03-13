@@ -5,6 +5,8 @@
  */
 package Logic;
 
+import static Logic.rentStatus.RENTED;
+import static Logic.rentStatus.RETURNED;
 import java.util.Calendar;
 
 /**
@@ -12,13 +14,35 @@ import java.util.Calendar;
  * @author ebbmf
  */
 public class Rental {
+    private final int id;
+    private final String carID;
     private final Calendar rentDate;
-    private final Calendar returnDate;
-    private final rentStatus status;
+    private Calendar returnDate;
+    private rentStatus status;
     
-    public Rental(Calendar rentDate, Calendar returnDate, rentStatus status, Car car, Customer customer) {
+    
+    public Rental(int id, String carID, Calendar rentDate) {
+        this.id = id;
+        this.carID = carID;
         this.rentDate = rentDate;
+        this.returnDate = null;
+        this.status = RENTED;
+    }
+
+    Rental() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public int getID() {
+        return id;
+    }
+    
+    public String getCarID() {
+        return carID;
+    }
+    
+    public void returnCar(Calendar returnDate) {
         this.returnDate = returnDate;
-        this.status = status;
+        status = RETURNED;
     }
 }

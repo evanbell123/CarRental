@@ -5,7 +5,7 @@
  */
 package Logic;
 
-import java.util.LinkedList;
+import static Logic.carStatus.AVAILABLE;
 
 /**
  *
@@ -13,19 +13,49 @@ import java.util.LinkedList;
  */
 public class Car {
 
-    private int ID;
+    private String ID;
     private CarSpec carSpec;
-    private LinkedList<Rental> rentals;
+    private carStatus status;
 
-    public Car(int ID) {
+    public Car(String ID, CarSpec carSpec) {
         this.ID = ID;
+        this.carSpec = carSpec;
+        this.status = AVAILABLE;
     }
 
-    public int getID() {
+    Car() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public String getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(String ID) {
         this.ID = ID;
+    }
+    
+    public carStatus getStatus() {
+        return status;
+    }
+    
+    public void setStatus(carStatus status) {
+        this.status = status;
+    }
+    
+    public String getMake() {
+        return carSpec.getMake();
+    }
+    
+    public String getModel() {
+        return carSpec.getModel();
+    }
+    
+    public int getYear() {
+        return carSpec.getYear();
+    }
+    
+    public CarSize getSize() {
+        return carSpec.getSize();
     }
 }

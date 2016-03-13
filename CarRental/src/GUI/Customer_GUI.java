@@ -6,12 +6,13 @@
 package GUI;
 
 import Logic.Controller;
-import java.awt.Dimension;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 import java.util.Vector;
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -20,33 +21,53 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Customer_GUI extends JFrame {
 
-    private Controller controller;
-    
-    String[] rentedCarColumnNames = {"Select",
-            "Make",
-            "Model",
-            "Year",
-            "Rented"};
-    
-    String[] accountHistoryColumnNames = {"ID",
-            "Make",
-            "Model",
-            "Year",
-            "Rented",
-            "Returned"};
-    
-    String[] findCarColumnNames = {"Select","ID", "Make", "Model", "Year","Size"};
+    private final Controller controller;
 
-    public Customer_GUI(int layout, String name, Controller controller) {
+    LinkedList<String> selectedAvailableCars;
+    LinkedList<String> selectedRentedCars;
+    
+    JTable findCarTable;
+    JTable rentedCarsTable;
+
+    
+
+    String[] rentedCarColumnNames = {"Select",
+        "ID",
+        "Make",
+        "Model",
+        "Year",
+        "Rented"};
+
+    String[] accountHistoryColumnNames = {"ID",
+        "Make",
+        "Model",
+        "Year",
+        "Rented",
+        "Returned"};
+
+    String[] findCarColumnNames = {"Select", "ID", "Make", "Model", "Year", "Size"};
+
+    public Customer_GUI(int layout, String name, String phoneNumber, String address, Controller controller) {
         this.controller = controller;
+        selectedAvailableCars = new LinkedList<>();
+        selectedRentedCars = new LinkedList<>();
         
+        Object[][] tableData = controller.getAvailableCars();
+        
+        MyTableModel findCarModel = new MyTableModel(tableData, findCarColumnNames);
+        findCarTable = new JTable(findCarModel);
+        
+        MyTableModel rentedCarsModel = new MyTableModel(tableData, rentedCarColumnNames);
+        
+        rentedCarsTable = new JTable(rentedCarsModel);
+
         JPanel panel = new JPanel();
         panel.setLayout(null);
 
         // Create the tab pages
-        JPanel panel1 = findCarTab(controller);
-        JPanel panel2 = rentedCarsTab();
-        JPanel panel3 = accountHistoryTab();
+        JPanel panel1 = findCarTab(name, phoneNumber, address, controller);
+        JPanel panel2 = rentedCarsTab(name, phoneNumber, address, controller);
+        JPanel panel3 = accountHistoryTab(name, phoneNumber, address, controller);
 
         String accountName = name + "'s Account";
         JLabel accountNameLabel = new JLabel(accountName);
@@ -72,12 +93,12 @@ public class Customer_GUI extends JFrame {
         //panel.add(customerNameText);
         panel.add(tabbedPane);
         add(panel);
-        
-        populateFindCarTable();
 
+        //populateFindCarTable();
     }
 
-    private JPanel findCarTab(Controller controller) {
+    private JPanel findCarTab(String name, String phoneNumber, String address, Controller controller) {
+
         JPanel panel1 = new JPanel();
         panel1.setLayout(null);
 //      Add Search Bar
@@ -88,33 +109,49 @@ public class Customer_GUI extends JFrame {
         JButton searchButton = new JButton("Search");
         searchButton.setBounds(365, 15, 100, 25);
         panel1.add(searchButton);
-//      Add Rent Selected button
+
+        //      Add Rent Selected button
         JButton rentSelectedButton = new JButton("Rent Selected");
-        //
-        rentSelectedButton.addActionListener(new ActionListener(){
-        @Override
-        public void actionPerformed(ActionEvent e){
-            
-            Rent_Car_GUI rentCar = new Rent_Car_GUI();
-            rentCar.setTitle("Rent Car");
-            rentCar.setDefaultCloseOperation(EXIT_ON_CLOSE);
-            rentCar.setLocation(400, 350);
-            rentCar.setSize(300,200);
-            rentCar.setMaximumSize(new Dimension(800, 400));
-            rentCar.setVisible(true);
-            
-        }
-    });
-        
+
+        findCarTable.getModel().addTableModelListener(new TableModelListener() {
+
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                int row = e.getFirstRow();
+                int col = e.getColumn();
+
+                Boolean selected = (Boolean) findCarTable.getValueAt(row, col);
+                String carID = (String) findCarTable.getValueAt(row, 1);
+
+                if (selected) { //if the select box is checked
+                    selectedAvailableCars.add(carID);
+                } else {
+                    selectedAvailableCars.remove(carID);
+                }
+            }
+        });
+
+        rentSelectedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if (selectedAvailableCars.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please select a car to rent", null, JOptionPane.ERROR_MESSAGE);
+                } else {
+                    while (!selectedAvailableCars.isEmpty()) {
+                        String rentDate = JOptionPane.showInputDialog("Enter the pickup date for Car # " + selectedAvailableCars.getLast() + " :");
+                        controller.rentCar(name, phoneNumber, address, selectedAvailableCars.getLast(), rentDate);
+                        selectedAvailableCars.removeLast();
+                    }
+                    findCarTable.setModel(new MyTableModel(controller.getAvailableCars(), findCarColumnNames));
+                    rentedCarsTable.setModel(new MyTableModel(controller.getRentedCars(name, phoneNumber, address), findCarColumnNames));
+                }
+            }
+        });
+
         rentSelectedButton.setBounds(10, 45, 115, 25);
         panel1.add(rentSelectedButton);
 
-        
-        Object[][] tableData = controller.getAvailableCars();
-        MyTableModel model = new MyTableModel(tableData, findCarColumnNames);
-        JTable findCarTable = new JTable(model);
-        
-        
         JScrollPane findCarScrollPane = new JScrollPane(findCarTable);
         findCarScrollPane.setBounds(0, 75, 550, 300);
         //tabbedPane.add(findCarScrollPane);
@@ -124,53 +161,77 @@ public class Customer_GUI extends JFrame {
         panel1.add(findCarScrollPane);
         return panel1;
     }
-    
-    private void populateFindCarTable() {
-        //Object[][] cars = controller.getAvailableCars();
-       // findCarTable.setModel(new DefaultTableModel(cars, findCarColumnNames));
-    }
+    /*
+     private void populateFindCarTable() {
+     Object[][] cars = controller.getAvailableCars();
+     findCarTable.setModel(new MyTableModel(cars, findCarColumnNames));
+     }
+     */
 
-    private JPanel rentedCarsTab() {
+    private JPanel rentedCarsTab(String name, String phoneNumber, String address, Controller controller) {
         JPanel panel2 = new JPanel();
         panel2.setLayout(null);
+
+        
+
+        
+
+        //rentedCarsTable.setModel(new MyTableModel(controller.getRentedCars(name, phoneNumber, address), findCarColumnNames));
+
+        rentedCarsTable.getModel().addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                int row = e.getFirstRow();
+                int col = e.getColumn();
+
+                Boolean selected = (Boolean) rentedCarsTable.getValueAt(row, col);
+                //String carID = (String) rentedCarsTable.getValueAt(row, 1);
+
+                String id = (String) rentedCarsTable.getValueAt(row, 1);
+
+                System.out.println(selectedRentedCars);
+
+                if (selected) { //if the select box is checked
+                    selectedRentedCars.add(id);
+                } else {
+                    selectedRentedCars.remove(id);
+                }
+            }
+        });
+
         JButton returnCarButton = new JButton("Return Selected");
-        returnCarButton.addActionListener(new ActionListener(){
-        @Override
-        public void actionPerformed(ActionEvent e){
-            
-            Return_Car_GUI returnCar = new Return_Car_GUI();
-            returnCar.setTitle("Return Car");
-            returnCar.setDefaultCloseOperation(EXIT_ON_CLOSE);
-            returnCar.setLocation(400, 350);
-            returnCar.setSize(300,200);
-            returnCar.setMaximumSize(new Dimension(800, 400));
-            returnCar.setVisible(true);
-            
-        }
-    });
+        returnCarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (selectedRentedCars.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please select a car to rent", null, JOptionPane.ERROR_MESSAGE);
+                } else {
+                    while (!selectedRentedCars.isEmpty()) {
+                        String returnDate = JOptionPane.showInputDialog("Enter the returnDate date for Car # " + selectedRentedCars.getLast() + " :");
+                        controller.returnCar(name, phoneNumber, address, selectedRentedCars.getLast(), returnDate);
+                        selectedRentedCars.removeLast();
+                    }
+                    rentedCarsTable.setModel(new MyTableModel(controller.getRentedCars(name, phoneNumber, address), findCarColumnNames));
+                }
+            }
+        });
         returnCarButton.setBounds(25, 15, 135, 25);
         panel2.add(returnCarButton);
-        
-        Object[][] tableData = {{false, "Nissan", "Altima", "2012", "10/12/16"}, {false, "", "", "", ""}};
-        MyTableModel model = new MyTableModel(tableData, rentedCarColumnNames);
-
-        JTable table = new JTable(model);
 
         //table.setBounds(50, 120, 550, 300);
-        JScrollPane scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = new JScrollPane(rentedCarsTable);
         scrollPane.setBounds(0, 50, 550, 300);
         panel2.add(scrollPane);
-        table.setRowSelectionInterval(0, 0);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        //rentedCarsTable.setRowSelectionInterval(0, 0);
+        rentedCarsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         return panel2;
     }
 
-    private JPanel accountHistoryTab() {
+    private JPanel accountHistoryTab(String name, String phoneNumber, String address, Controller controller) {
         JPanel panel3 = new JPanel();
         panel3.setLayout(null);
 
-        
-        Object[][] tableData = {{"123", "Nissan", "Altima", "2012", "10/12/16", "10/15/16"}, {"234", "", "", "", "", ""}};
+        Object[][] tableData = {};
         //TableModel model = new MyTableModel(tableData, columnNames);
 
         JTable table = new JTable(tableData, accountHistoryColumnNames);
@@ -179,7 +240,7 @@ public class Customer_GUI extends JFrame {
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBounds(0, 50, 550, 300);
         panel3.add(scrollPane);
-        table.setRowSelectionInterval(0, 0);
+        //table.setRowSelectionInterval(0, 0);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         return panel3;
@@ -211,7 +272,7 @@ class MyTableModel extends DefaultTableModel {
     @Override
     public void setValueAt(Object aValue, int row, int column) {
         if (aValue instanceof Boolean && column == 0) {
-            System.out.println(aValue);
+            //System.out.println(aValue);
             Vector rowData = (Vector) getDataVector().get(row);
             rowData.set(0, (boolean) aValue);
             fireTableCellUpdated(row, column);

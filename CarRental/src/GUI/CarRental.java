@@ -7,7 +7,7 @@ package GUI;
 
 import Logic.CarSpec;
 import Logic.Controller;
-import static Logic.carSize.*;
+import static Logic.CarSize.*;
 import java.awt.Dimension;
 import java.util.LinkedList;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
@@ -19,24 +19,6 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author evanb
  */
 public class CarRental {
-
-    //private static LinkedList<CarSpec> sampleCarSpecs;
-    //private static int id = 0; // this is the starting id
-    //private static final int carsPerSpec = 3; // Generate 3 cars for each spec
-
-    public CarRental() {
-        /*
-        sampleCarSpecs = new LinkedList<>();
-        sampleCarSpecs.add(new CarSpec("Nissan", "Altima", 2012, SMALL));
-        sampleCarSpecs.add(new CarSpec("Nissan", "Altima", 2012, MIDSIZED));
-        sampleCarSpecs.add(new CarSpec("Volks Wagen", "Passat", 2002, LARGE));
-        sampleCarSpecs.add(new CarSpec("Mercedes", "Benz", 2000, SMALL));
-        */
-    }
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -55,29 +37,15 @@ public class CarRental {
         controller.addCarSpec(Altima2012);
         controller.addCarSpec(Maxima2015);
         controller.addCarSpec(Titan2016);
-
-        
         
         /*
         Generate sample cars for each carSpec
          */
-        controller.addCar("Nissan", "Altima", 2012, SMALL, 1);
-        controller.addCar("Nissan", "Altima", 2012, SMALL, 2);
-        controller.addCar("Nissan", "Maxima", 2015, MIDSIZED, 3);
-        controller.addCar("Nissan", "Titan", 2016, LARGE, 4);
-
-                
-        /*
-        sampleCarSpecs.stream().forEach((CarSpec carSpec) -> {
-            for (int i = 0; i < carsPerSpec; i++) {
-                controller.addCar(carSpec, id);
-                id++;
-            }
-        });
-*/
+        controller.addCar(Altima2012, "1");
+        controller.addCar(Maxima2015, "2");
+        controller.addCar(Maxima2015, "3");
+        controller.addCar(Titan2016, "4");
         
-        
-
         /*
         Generate Sample Customers
          */
@@ -85,9 +53,6 @@ public class CarRental {
         controller.addCustomer("Evan Bell", "556-641-1236", "400UMKC");
         controller.addCustomer("Aldo II", "981-641-1239", "500UMKC");
         
-        
-        
-
 //      Starting GUI      
         Search_GUI frame;
         frame = new Search_GUI(controller);

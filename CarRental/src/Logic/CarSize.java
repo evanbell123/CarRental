@@ -9,7 +9,7 @@ package Logic;
  *
  * @author chriswalter
  */
-public enum carSize {
+public enum CarSize {
     SMALL,MIDSIZED,LARGE;
     
 }
