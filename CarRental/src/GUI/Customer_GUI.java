@@ -6,10 +6,12 @@
 package GUI;
 
 import Logic.Controller;
+import Logic.*;
 import java.awt.Dimension;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 import java.util.Vector;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -84,9 +86,29 @@ public class Customer_GUI extends JFrame {
         JTextField customerSearchText = new JTextField(20);
         customerSearchText.setBounds(10, 15, 350, 25);
         panel1.add(customerSearchText);
+        
+        Object[][] tableData = controller.getAvailableCars();
+        MyTableModel model = new MyTableModel(tableData, findCarColumnNames);
+        JTable findCarTable = new JTable(model);
+        
         //     Add Search Button       
         JButton searchButton = new JButton("Search");
         searchButton.setBounds(365, 15, 100, 25);
+         searchButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LinkedList<CarSpec> carSpecs = controller.searchCarSpecs(customerSearchText.getText());
+                model.setRowCount(0);
+                
+                for (CarSpec carSpec : carSpecs) {
+                     for (Car car: carSpec.getCars()) {
+                        model.addRow(new Object[]{false,car.getID(),carSpec.getMake(), carSpec.getModel(), carSpec.getYear(),carSpec.getSize()});
+               // for(CarSpec spec :carSpecs){
+               //     model.addRow(new Object[]{false,car.getID(),carSpec.getMake(), carSpec.getModel(), carSpec.getYear(),carSpec.getSize()};
+               }
+            }
+            }
+        });
         panel1.add(searchButton);
 //      Add Rent Selected button
         JButton rentSelectedButton = new JButton("Rent Selected");
@@ -110,9 +132,7 @@ public class Customer_GUI extends JFrame {
         panel1.add(rentSelectedButton);
 
         
-        Object[][] tableData = controller.getAvailableCars();
-        MyTableModel model = new MyTableModel(tableData, findCarColumnNames);
-        JTable findCarTable = new JTable(model);
+        
         
         
         JScrollPane findCarScrollPane = new JScrollPane(findCarTable);

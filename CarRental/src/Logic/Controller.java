@@ -83,6 +83,16 @@ public class Controller {
         }
         return list;
     }
+    public LinkedList<CarSpec> searchCarSpecs(String text){
+        LinkedList<CarSpec> list = new LinkedList<>();
+        
+        for (CarSpec spec : carSpecs){
+            if (spec.contains(text)){
+                list.add(spec);
+            }
+        }
+        return list;
+    }
 
     public Object[][] getAvailableCars() {
         //DefaultTableModel model = (DefaultTableModel) findCarTable.getModel();

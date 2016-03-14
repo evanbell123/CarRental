@@ -11,7 +11,7 @@ import java.util.LinkedList;
  *
  * @author chriswalter
  */
-public class CarSpec {
+public class CarSpec implements Searchable {
 
     private String make;
     private String model;
@@ -85,5 +85,12 @@ public class CarSpec {
                 && this.year == that.year
                 && this.size.equals(that.size);
     }
+
+    @Override
+    public boolean contains(String text) {
+ boolean theMake = make.trim().toUpperCase().contains(text.trim().toUpperCase());
+        boolean theModel = model.trim().toUpperCase().contains(text.trim().toUpperCase());
+        
+        return (theMake || theModel);    }
 
 }
