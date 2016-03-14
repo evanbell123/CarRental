@@ -14,7 +14,7 @@ import java.util.Calendar;
  * @author ebbmf
  */
 public class Rental {
-    private final int id;
+    private final Integer id;
     private final String carID;
     private final Calendar rentDate;
     private Calendar returnDate;
@@ -39,6 +39,18 @@ public class Rental {
     
     public String getCarID() {
         return carID;
+    }
+    
+    public Calendar getRentDate() {
+        return rentDate;
+    }
+    
+    public Calendar getReturnDate() {
+        return returnDate;
+    }
+    
+    public Boolean isReturned() {
+        return returnDate != null;
     }
     
     public void returnCar(Calendar returnDate) {

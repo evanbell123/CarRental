@@ -7,6 +7,7 @@ package Logic;
 
 import static Logic.carStatus.AVAILABLE;
 import static Logic.carStatus.UNAVAILABLE;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
@@ -23,6 +24,7 @@ public class Controller {
     private LinkedList<Car> cars;
     private LinkedList<Customer> customerList;
     private int availableCars = 0;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
     public static Controller instance() {
         if (singleton == null) {
@@ -101,7 +103,7 @@ public class Controller {
 
     }
 
-    public void returnCar(String accountName, String phone, String address, String rentalID, String returnDate) {
+    public void returnCar(String accountName, String phone, String address, Integer rentalID, String returnDate) {
 
         String[] dateTokens = returnDate.split("/");
 
@@ -113,12 +115,13 @@ public class Controller {
 
         Customer customer = getCustomer(accountName, phone, address);
 
-        String carID = getRentalCarID(customer, Integer.parseInt(rentalID));
+        String carID = getRentalCarID(customer, rentalID);
 
         customer.returnCar(rentalID, returnDateCal);
 
         //customer.returnCar(carID, returnDateCal);
         getCarByID(carID).setStatus(AVAILABLE);
+        availableCars++;
 
     }
 
@@ -152,19 +155,46 @@ public class Controller {
         Customer customer = getCustomer(accountName, phone, address);
         LinkedList<Rental> rentals = customer.getRentals();
 
-        Object[][] result = new Object[rentals.size()][5];
+        Object[][] result = new Object[customer.getCarsRented()][5];
         int count = 0;
 
         for (Rental rental : rentals) {
-            Car car = getCarByID(rental.getCarID());
-
-            Object[] carArray = {false, rental.getID(), car.getMake(), car.getModel(), car.getYear()};
-            result[count++] = carArray;
-
+            if (!rental.isReturned()) {
+                Car car = getCarByID(rental.getCarID());
+                
+                String rentalDate = dateFormat.format(rental.getRentDate().getTime());
+                
+                Object[] carArray = {false, rental.getID(), car.getMake(), car.getModel(), car.getYear(), rentalDate};
+                result[count++] = carArray;
+            }
         }
 
         return result;
     }
+    
+    public Object[][] getReturnedCars(String accountName, String phone, String address) {
+
+        Customer customer = getCustomer(accountName, phone, address);
+        LinkedList<Rental> rentals = customer.getRentals();
+
+        Object[][] result = new Object[customer.getCarsReturned()][5];
+        int count = 0;
+
+        for (Rental rental : rentals) {
+            if (rental.isReturned()) {
+                Car car = getCarByID(rental.getCarID());
+                
+                String rentalDate = dateFormat.format(rental.getRentDate().getTime());
+                String returnDate = dateFormat.format(rental.getReturnDate().getTime());
+                
+                Object[] carArray = {rental.getID(), car.getMake(), car.getModel(), car.getYear(), rentalDate, returnDate};
+                result[count++] = carArray;
+            }
+        }
+
+        return result;
+    }
+    
     /*
      Assuming carspec exits
      */

@@ -19,17 +19,16 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author aldo
  */
-public class Customer_GUI extends JFrame {
+public final class Customer_GUI extends JFrame {
 
     private final Controller controller;
 
     LinkedList<String> selectedAvailableCars;
-    LinkedList<String> selectedRentedCars;
-    
+    LinkedList<Integer> selectedRentedCars;
+
     JTable findCarTable;
     JTable rentedCarsTable;
-
-    
+    JTable returnedCarsTable;
 
     String[] rentedCarColumnNames = {"Select",
         "ID",
@@ -51,15 +50,18 @@ public class Customer_GUI extends JFrame {
         this.controller = controller;
         selectedAvailableCars = new LinkedList<>();
         selectedRentedCars = new LinkedList<>();
-        
+
         Object[][] tableData = controller.getAvailableCars();
-        
+
         MyTableModel findCarModel = new MyTableModel(tableData, findCarColumnNames);
         findCarTable = new JTable(findCarModel);
-        
+
         MyTableModel rentedCarsModel = new MyTableModel(tableData, rentedCarColumnNames);
-        
         rentedCarsTable = new JTable(rentedCarsModel);
+        
+        returnedCarsTable = new JTable(tableData, accountHistoryColumnNames);
+        
+        updateTables(name, phoneNumber, address);
 
         JPanel panel = new JPanel();
         panel.setLayout(null);
@@ -98,7 +100,9 @@ public class Customer_GUI extends JFrame {
     }
 
     private JPanel findCarTab(String name, String phoneNumber, String address, Controller controller) {
-
+        
+        
+        
         JPanel panel1 = new JPanel();
         panel1.setLayout(null);
 //      Add Search Bar
@@ -112,25 +116,7 @@ public class Customer_GUI extends JFrame {
 
         //      Add Rent Selected button
         JButton rentSelectedButton = new JButton("Rent Selected");
-
-        findCarTable.getModel().addTableModelListener(new TableModelListener() {
-
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                int row = e.getFirstRow();
-                int col = e.getColumn();
-
-                Boolean selected = (Boolean) findCarTable.getValueAt(row, col);
-                String carID = (String) findCarTable.getValueAt(row, 1);
-
-                if (selected) { //if the select box is checked
-                    selectedAvailableCars.add(carID);
-                } else {
-                    selectedAvailableCars.remove(carID);
-                }
-            }
-        });
-
+        
         rentSelectedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -143,8 +129,7 @@ public class Customer_GUI extends JFrame {
                         controller.rentCar(name, phoneNumber, address, selectedAvailableCars.getLast(), rentDate);
                         selectedAvailableCars.removeLast();
                     }
-                    findCarTable.setModel(new MyTableModel(controller.getAvailableCars(), findCarColumnNames));
-                    rentedCarsTable.setModel(new MyTableModel(controller.getRentedCars(name, phoneNumber, address), findCarColumnNames));
+                    updateTables(name, phoneNumber, address);
                 }
             }
         });
@@ -172,32 +157,8 @@ public class Customer_GUI extends JFrame {
         JPanel panel2 = new JPanel();
         panel2.setLayout(null);
 
-        
-
-        
-
         //rentedCarsTable.setModel(new MyTableModel(controller.getRentedCars(name, phoneNumber, address), findCarColumnNames));
-
-        rentedCarsTable.getModel().addTableModelListener(new TableModelListener() {
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                int row = e.getFirstRow();
-                int col = e.getColumn();
-
-                Boolean selected = (Boolean) rentedCarsTable.getValueAt(row, col);
-                //String carID = (String) rentedCarsTable.getValueAt(row, 1);
-
-                String id = (String) rentedCarsTable.getValueAt(row, 1);
-
-                System.out.println(selectedRentedCars);
-
-                if (selected) { //if the select box is checked
-                    selectedRentedCars.add(id);
-                } else {
-                    selectedRentedCars.remove(id);
-                }
-            }
-        });
+        
 
         JButton returnCarButton = new JButton("Return Selected");
         returnCarButton.addActionListener(new ActionListener() {
@@ -211,7 +172,8 @@ public class Customer_GUI extends JFrame {
                         controller.returnCar(name, phoneNumber, address, selectedRentedCars.getLast(), returnDate);
                         selectedRentedCars.removeLast();
                     }
-                    rentedCarsTable.setModel(new MyTableModel(controller.getRentedCars(name, phoneNumber, address), findCarColumnNames));
+                    //rentedCarsTable.setModel(new MyTableModel(controller.getRentedCars(name, phoneNumber, address), findCarColumnNames));
+                    updateTables(name, phoneNumber, address);
                 }
             }
         });
@@ -231,19 +193,61 @@ public class Customer_GUI extends JFrame {
         JPanel panel3 = new JPanel();
         panel3.setLayout(null);
 
-        Object[][] tableData = {};
+        //Object[][] tableData = {};
         //TableModel model = new MyTableModel(tableData, columnNames);
 
-        JTable table = new JTable(tableData, accountHistoryColumnNames);
-
         //table.setBounds(50, 120, 550, 300);
-        JScrollPane scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = new JScrollPane(returnedCarsTable);
         scrollPane.setBounds(0, 50, 550, 300);
         panel3.add(scrollPane);
         //table.setRowSelectionInterval(0, 0);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        returnedCarsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         return panel3;
+    }
+
+    void updateTables(String name, String phoneNumber, String address) {
+        findCarTable.setModel(new MyTableModel(controller.getAvailableCars(), findCarColumnNames));
+        findCarTable.getModel().addTableModelListener(new TableModelListener() {
+
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                int row = e.getFirstRow();
+                int col = e.getColumn();
+
+                Boolean selected = (Boolean) findCarTable.getValueAt(row, col);
+                String carID = (String) findCarTable.getValueAt(row, 1);
+
+                if (selected) { //if the select box is checked
+                    selectedAvailableCars.add(carID);
+                } else {
+                    selectedAvailableCars.remove(carID);
+                }
+            }
+        });
+        
+        rentedCarsTable.setModel(new MyTableModel(controller.getRentedCars(name, phoneNumber, address), rentedCarColumnNames));
+        rentedCarsTable.getModel().addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                int row = e.getFirstRow();
+                int col = e.getColumn();
+
+                Boolean selected = (Boolean) rentedCarsTable.getValueAt(row, col);
+                
+                int id = (int) rentedCarsTable.getValueAt(row, 1);
+
+                if (selected) { //if the select box is checked
+                    selectedRentedCars.add(id);
+                } else {
+                    selectedRentedCars.remove(id);
+                }
+
+                System.out.println(selectedRentedCars);
+            }
+        });
+        
+        returnedCarsTable.setModel(new DefaultTableModel(controller.getReturnedCars(name, phoneNumber, address), accountHistoryColumnNames));
     }
 }
 

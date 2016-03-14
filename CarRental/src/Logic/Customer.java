@@ -16,8 +16,9 @@ public class Customer implements Searchable {
     private final String name;
     private final String phone;
     private final String address;
-    private int carsRented;
     private final LinkedList<Rental> rentals;
+    private int carsRented;
+    private int carsReturned;
 
     
     public Customer(String name, String phone, String address) {
@@ -25,6 +26,7 @@ public class Customer implements Searchable {
         this.phone = phone;
         this.address = address;
         this.carsRented = 0;
+        this.carsReturned = 0;
         this.rentals = new LinkedList<>();
     };
 
@@ -72,23 +74,34 @@ public class Customer implements Searchable {
     public String getAddress() {
         return address;
     }
+    
+    public int getCarsReturned() {
+        return carsReturned;
+    }
+    
+    public int getCarsRented() {
+        return carsRented;
+    }
 
     public LinkedList<Rental> getRentals() {
         return rentals;
     }
     
     public void rentCar(String carID, Calendar rentDate) {
-        rentals.add(new Rental(carsRented, carID, rentDate));
+        int rentalID = rentals.size();
+        rentals.add(new Rental(rentalID, carID, rentDate));
         carsRented++;
     }
     
-    public void returnCar(String carID, Calendar returnDate) {
-        findRentalByCarID(carID).returnCar(returnDate);
+    public void returnCar(Integer rentalID, Calendar returnDate) {
+        findRentalByID(rentalID).returnCar(returnDate);
+        carsReturned++;
+        carsRented--;
     }
     
-    public Rental findRentalByCarID(String carID) {
+    public Rental findRentalByID(Integer rentalID) {
         for (Rental rental : rentals) {
-            if (rental.getCarID().equals(carID)) {
+            if (rental.getID() == rentalID) {
                 return rental;
             }
         }
