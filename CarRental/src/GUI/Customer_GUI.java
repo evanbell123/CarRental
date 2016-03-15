@@ -14,6 +14,7 @@ import java.util.Vector;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -29,6 +30,9 @@ public final class Customer_GUI extends JFrame {
     JTable findCarTable;
     JTable rentedCarsTable;
     JTable returnedCarsTable;
+    
+    MyTableModel findCarModel;
+    JTextField customerSearchText;
 
     String[] rentedCarColumnNames = {"Select",
         "ID",
@@ -53,7 +57,7 @@ public final class Customer_GUI extends JFrame {
 
         Object[][] tableData = controller.getAvailableCars();
 
-        MyTableModel findCarModel = new MyTableModel(tableData, findCarColumnNames);
+        findCarModel = new MyTableModel(tableData, findCarColumnNames);
         findCarTable = new JTable(findCarModel);
 
         MyTableModel rentedCarsModel = new MyTableModel(tableData, rentedCarColumnNames);
@@ -106,14 +110,23 @@ public final class Customer_GUI extends JFrame {
         JPanel panel1 = new JPanel();
         panel1.setLayout(null);
 //      Add Search Bar
-        JTextField customerSearchText = new JTextField(20);
+        customerSearchText = new JTextField(20);
         customerSearchText.setBounds(10, 15, 350, 25);
         panel1.add(customerSearchText);
         //     Add Search Button       
         JButton searchButton = new JButton("Search");
         searchButton.setBounds(365, 15, 100, 25);
+        
         panel1.add(searchButton);
-
+          searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateSearchTable();
+                
+                
+            }
+        });
+        
         //      Add Rent Selected button
         JButton rentSelectedButton = new JButton("Rent Selected");
         
@@ -204,6 +217,10 @@ public final class Customer_GUI extends JFrame {
         returnedCarsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         return panel3;
+    }
+    
+    void updateSearchTable(){
+        findCarTable.setModel(new MyTableModel(controller.getSearchCars(customerSearchText.getText()), findCarColumnNames));
     }
 
     void updateTables(String name, String phoneNumber, String address) {

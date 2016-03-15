@@ -149,7 +149,37 @@ public class Controller {
 
         return result;
     }
+    //helper function for getSearchCars that looks for matches
+    private boolean containsTxt(String txt, String searchTxt){
+        return txt.trim().toUpperCase().contains(searchTxt.trim().toUpperCase());
+    }
+    /*
+        Adds matched cars to LinkedList in order to know the number of matches
+        then converts linked list to 2d Obect[][] and send to CustomerGUI
+    */
+    public Object[][] getSearchCars(String searchTxt) {
+        LinkedList<Object[]> matchedCars = new LinkedList<>();
+        
+        //find cars among available cars that match searchtxt
+        for (Object[] car : getAvailableCars()) {
+            for (Object txt : car){
+                //Convet each item in row to string and see if seach text matches
+                if (containsTxt(txt.toString(), searchTxt)){
+                    matchedCars.add(car);
+                    break;
+                }
+            }            
+        }
+        //create result object to send to gui
+        Object[][] result = new Object[matchedCars.size()][6];
+        int count = 0;
+        for (Object[] car : matchedCars){
+            result[count++] = car;
+        }
 
+        return result;
+    }
+    
     public Object[][] getRentedCars(String accountName, String phone, String address) {
 
         Customer customer = getCustomer(accountName, phone, address);
