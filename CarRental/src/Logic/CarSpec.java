@@ -16,15 +16,15 @@ public class CarSpec {
     private String make;
     private String model;
     private int year;
-    private carSize size;
-    private LinkedList<Car> cars;
+    private CarSize size;
+    //private LinkedList<Car> cars;
 
-    public CarSpec(String make, String model, int year, carSize size) {
-        this.make = make;
+    public CarSpec(String make, String model, int year, CarSize size) {
+        this.make = make; 
         this.model = model;
         this.year = year;
         this.size = size;
-        cars = new LinkedList<>();
+        //cars = new LinkedList<>();
     }
 
     CarSpec() {
@@ -55,14 +55,15 @@ public class CarSpec {
         this.year = year;
     }
 
-    public carSize getSize() {
+    public CarSize getSize() {
         return size;
     }
 
-    public void setSize(carSize size) {
+    public void setSize(CarSize size) {
         this.size = size;
     }
-
+    
+    /*
     public LinkedList<Car> getCars() {
         return this.cars;
     }
@@ -70,6 +71,7 @@ public class CarSpec {
     public void addCar(Car car) {
         cars.add(car);
     }
+    */
 
     @Override
     public boolean equals(Object other) {
